@@ -15,6 +15,8 @@ abstract class SampleDatabase : RoomDatabase() {
             val sampleDatabase = Room.databaseBuilder(context,
                     SampleDatabase::class.java, "sample-db").build()
 
+
+
             return sampleDatabase
         }
     }

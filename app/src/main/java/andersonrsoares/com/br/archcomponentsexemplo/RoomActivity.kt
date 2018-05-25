@@ -14,7 +14,7 @@ class RoomActivity : AppCompatActivity() {
         setContentView(R.layout.activity_room)
 
 
-        sampleDatabase =  SampleDatabase.create(this)
+        sampleDatabase =  SampleDatabase.create(applicationContext)
 
         //Let's add some dummy data to the database.
         val university = University()
