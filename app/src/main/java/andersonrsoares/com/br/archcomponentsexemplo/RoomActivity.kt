@@ -3,7 +3,9 @@ package andersonrsoares.com.br.archcomponentsexemplo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.arch.persistence.room.Room
-
+import org.jetbrains.anko.doAsync
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Observer
 
 
 class RoomActivity : AppCompatActivity() {
@@ -27,7 +29,21 @@ class RoomActivity : AppCompatActivity() {
         university.college = college
 
         //Now access all the methods defined in DaoAccess with sampleDatabase object
-        sampleDatabase.daoAccess().insertOnlySingleRecord(university)
+        doAsync {
+            sampleDatabase.daoAccess().insertOnlySingleRecord(university)
+
+            sampleDatabase.daoAccess().fetchAllData().forEach {
+                print(it)
+            }
+        }
+
+        val universityLiveData = sampleDatabase.daoAccess().fetchAllLiveData()
+        universityLiveData.observe(this,Observer<List<University>> {
+            it?.forEach {
+                print(it)
+            }
+        })
+
 
 
 

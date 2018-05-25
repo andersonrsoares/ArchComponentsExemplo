@@ -1,5 +1,6 @@
 package andersonrsoares.com.br.archcomponentsexemplo
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 
 
@@ -17,6 +18,10 @@ interface DaoAccess {
 
     @Query("SELECT * FROM University")
     fun fetchAllData(): List<University>
+
+    @Query("SELECT * FROM University")
+    fun fetchAllLiveData(): LiveData<List<University>>
+
 
     @Query("SELECT * FROM University WHERE clgid =:college_id")
     fun getSingleRecord(college_id: Int): University
