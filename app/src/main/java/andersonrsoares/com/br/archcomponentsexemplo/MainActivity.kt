@@ -2,6 +2,7 @@ package andersonrsoares.com.br.archcomponentsexemplo
 
 import andersonrsoares.com.br.archcomponentsexemplo.model.User
 import andersonrsoares.com.br.archcomponentsexemplo.ui.MainViewModel
+import android.app.Activity
 import android.arch.lifecycle.*
 import android.arch.lifecycle.Observer
 import android.support.v7.app.AppCompatActivity
@@ -10,6 +11,12 @@ import android.os.Handler
 import android.view.WindowManager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import android.speech.RecognizerIntent
+import android.content.Intent
+import android.util.Log
+import android.content.ActivityNotFoundException
+import android.widget.Toast
+import org.jetbrains.anko.longToast
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,20 +24,59 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewmodel:MainViewModel
 
     private val result = MediatorLiveData<List<User>>()
+    private val REQ_CODE_SPEECH_INPUT = 100
 
+    private fun askSpeechInput() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                "Hi speak something")
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT)
+        } catch (a: ActivityNotFoundException) {
+
+        }
+
+    }
+
+    // Receiving speech input
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            REQ_CODE_SPEECH_INPUT -> {
+                if (resultCode == Activity.RESULT_OK && null != data) {
+
+                    val result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                   // voiceInput.setText(result[0])
+
+                    print(result[0])
+                    longToast(result[0])
+                }
+            }
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE)
+        //remover print scream
+//        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+//                WindowManager.LayoutParams.FLAG_SECURE)
 
         setContentView(R.layout.activity_main)
 
+        button.setOnClickListener {
+            askSpeechInput()
+        }
 
         viewmodel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-
+/*
         result.observeForever {
             it?.run {
                 print(it)
@@ -73,7 +119,7 @@ class MainActivity : AppCompatActivity() {
         usersFromNetwork.value = arrayUtils2
         result.addSource(usersFromNetwork, { newUserList ->
             result.setValue(newUserList)
-        })
+        })*/
 
 
 //        result.value = arrayListOf()

@@ -9,7 +9,8 @@ import android.arch.persistence.room.PrimaryKey
 data class University(
         @PrimaryKey(autoGenerate = true) var  slNo:Int = 0,
         var name:String = "",
-        @Embedded(prefix = "clg") var  college:College = College()
+        @Embedded(prefix = "clg") var  college:College = College(),
+        var endereco:String = ""
 )
 
 data class College(
