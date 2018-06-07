@@ -11,13 +11,15 @@ abstract class SampleDatabase : RoomDatabase() {
     abstract fun daoAccess(): DaoAccess
 
     companion object {
+         private var  instance:SampleDatabase? = null
          fun create(context: Context):SampleDatabase{
-            val sampleDatabase = Room.databaseBuilder(context,
-                    SampleDatabase::class.java, "sample-db")
-                    .fallbackToDestructiveMigration()//para funcionar a recriação da tabela a versão do banco precisa ser criada
-                    .build()
-
-            return sampleDatabase
+             if(instance == null){
+                 instance = Room.databaseBuilder(context,
+                         SampleDatabase::class.java, "sample-db")
+                         .fallbackToDestructiveMigration()//para funcionar a recriação da tabela a versão do banco precisa ser criada
+                         .build()
+             }
+            return instance!!
         }
     }
 }

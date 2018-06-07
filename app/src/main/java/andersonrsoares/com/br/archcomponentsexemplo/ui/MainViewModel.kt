@@ -6,5 +6,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
-    var user = MutableLiveData<User>()
+    private var user = MutableLiveData<User>()
+
+
 }

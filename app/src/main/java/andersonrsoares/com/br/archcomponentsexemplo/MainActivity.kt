@@ -1,5 +1,6 @@
 package andersonrsoares.com.br.archcomponentsexemplo
 
+import andersonrsoares.com.br.archcomponentsexemplo.databinding.ActivityMainBinding
 import andersonrsoares.com.br.archcomponentsexemplo.model.User
 import andersonrsoares.com.br.archcomponentsexemplo.ui.MainViewModel
 import android.app.Activity
@@ -17,6 +18,9 @@ import android.util.Log
 import android.content.ActivityNotFoundException
 import android.widget.Toast
 import org.jetbrains.anko.longToast
+import android.databinding.DataBindingUtil
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -68,13 +72,18 @@ class MainActivity : AppCompatActivity() {
 //        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE,
 //                WindowManager.LayoutParams.FLAG_SECURE)
 
-        setContentView(R.layout.activity_main)
+        //setContentView(R.layout.activity_main)
+        viewmodel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        //val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+       // binding.
+        binding.setLifecycleOwner(this)
         button.setOnClickListener {
             askSpeechInput()
         }
 
-        viewmodel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        setContentView(binding.root)
 
 /*
         result.observeForever {
