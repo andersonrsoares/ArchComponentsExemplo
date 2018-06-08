@@ -74,16 +74,18 @@ class MainActivity : AppCompatActivity() {
 
         //setContentView(R.layout.activity_main)
         viewmodel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        //val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-       // binding.
+        //val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding.viewmodel = viewmodel
         binding.setLifecycleOwner(this)
         button.setOnClickListener {
             askSpeechInput()
         }
+        viewmodel.user.value = User("1","xzxxasdfasd")
+        //setContentView(binding.root)
 
-        setContentView(binding.root)
+
 
 /*
         result.observeForever {
